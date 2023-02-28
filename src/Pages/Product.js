@@ -61,7 +61,7 @@ const Product = () => {
       window.alert(`Sorry, ${product.name} is out of stock`);
       return
     }
-    cartDispatch({type:'CART_ADD_ITEM', payload: {...product, quantity: 1} })
+    cartDispatch({type:'CART_ADD_ITEM', payload: {...product, quantity} })
   };
 
   return loading ? (
