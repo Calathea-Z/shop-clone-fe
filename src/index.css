@@ -52,3 +52,8 @@ main {
 .img-thumbnail {
   height: 80px;
 }
+
+.small-container {
+  max-widt: 600px;
+}
+

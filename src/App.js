@@ -9,6 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import { useContext } from "react";
 import { Store } from "./Store";
 import Cart from "./pages/Cart";
+import SignIn from "./pages/SignIn";
 
 function App() {
   const { state } = useContext(Store);
@@ -43,6 +44,7 @@ function App() {
               <Route path="/product/:slug" element={<Product />} />
               <Route path="/" element={<Home /> } />
               <Route path='/cart' element={<Cart /> } />
+              <Route path='/signin' element={<SignIn /> } />
             </Routes>
           </Container>
         </main>
