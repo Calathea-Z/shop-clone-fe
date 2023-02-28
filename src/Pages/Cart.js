@@ -7,6 +7,7 @@ import MessageBox from "../components/MessageBox";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Store } from "../Store";
 import Button from "react-bootstrap/esm/Button";
+import Card from 'react-bootstrap/Card';
 
 const Cart = () => {
   const { state, dispatch: cartDispatch } = useContext(Store);
@@ -39,18 +40,21 @@ const Cart = () => {
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
                     <Col md={3}>
-                      <Button variant='light' disabled={item.quantity === 1}>
-                        <i className='fas fa-minus-circle'></i>
-                      </Button>{' '}
-                      <span>{item.quantity}</span>{' '}
-                      <Button variant='light' disabled={item.quantity === 1}>
-                        <i className='fas fa-plus-circle'></i>
-                      </Button>{' '}
+                      <Button variant="light" disabled={item.quantity === 1}>
+                        <i className="fas fa-minus-circle"></i>
+                      </Button>{" "}
+                      <span>{item.quantity}</span>{" "}
+                      <Button
+                        variant="light"
+                        disabled={item.quantity === item.CountInStock}
+                      >
+                        <i className="fas fa-plus-circle"></i>
+                      </Button>{" "}
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
-                      <Button variant='light'>
-                        <i className='fas fa-trash'></i>
+                      <Button variant="light">
+                        <i className="fas fa-trash"></i>
                       </Button>
                     </Col>
                   </Row>
@@ -59,7 +63,21 @@ const Cart = () => {
             </ListGroup>
           )}
         </Col>
-        <Col md={4}></Col>
+        <Col md={4}>
+          <Card>
+            <Card.Body>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <h3>
+                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
+                    items) : ${" "}
+                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                  </h3>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </div>
   );
