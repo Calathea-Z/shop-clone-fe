@@ -3,27 +3,49 @@ import Form from "react-bootstrap/esm/Form";
 import Button from "react-bootstrap/esm/Button";
 import { Helmet } from "react-helmet-async";
 import { useLocation, Link } from "react-router-dom";
+import axios from 'axios';
+import { useContext, useState } from "react";
+import { Store } from "../Store";
 
 const SignIn = () => {
   const {search} = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { state, dispatch: contextDispatch } = useContext(Store);
+
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try{
+        const { data } = await axios.post('/api/users/signin', {
+          email,
+          password,
+        });
+        contextDispatch({ type: 'USER_SIGNIN', payload: data })
+        console.log(data)
+    }catch (err) {
+    }
+  }
   return (
     <Container className='small-container'>
       <Helmet>
         <title>Sign In</title>
       </Helmet>
       <h1 className='my-3'>Sign In</h1>
-      <Form>
+      <Form onSubmit={submitHandler}>
 
         <Form.Group className='mb-3' controlled='email'>
           <Form.Label>Email</Form.Label>
-          <Form.Control type='email' required></Form.Control>
+          <Form.Control type='email' required onChange={(e) => setEmail(e.target.value)} />
         </Form.Group>
 
         <Form.Group className='mb-3' controlled='password'>
           <Form.Label>Password</Form.Label>
-          <Form.Control type='password' required></Form.Control>
+          <Form.Control type='password' required onChange={(e)=> setPassword(e.target.value)}/>
         </Form.Group>
 
         <div className='mb-3'>
