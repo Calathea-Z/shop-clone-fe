@@ -45,7 +45,7 @@ function Home() {
   return (
     <div>
       <Helmet>
-        <title>Post Shop!</title>
+        <title>Z-Shop</title>
       </Helmet>
       <h1>Featured Products </h1>
       <div className="products">

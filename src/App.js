@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { Store } from "./Store";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
+import ShippingAddress from "./pages/ShippingAddress";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -31,7 +32,7 @@ function App() {
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
-                <Navbar.Brand>Post Shop !</Navbar.Brand>
+                <Navbar.Brand>Z-Shop</Navbar.Brand>
               </LinkContainer>
               <Nav className='me-auto'>
                 <Link to='/cart' className='nav-link'>
@@ -72,10 +73,11 @@ function App() {
         <main>
           <Container className='mt-3'>
             <Routes>
-              <Route path="/product/:slug" element={<Product />} />
+              <Route path="/product/:slug" element={<Product /> } />
               <Route path="/" element={<Home /> } />
               <Route path='/cart' element={<Cart /> } />
               <Route path='/signin' element={<SignIn /> } />
+              <Route path='/shipping' element={<ShippingAddress /> } />
             </Routes>
           </Container>
         </main>
