@@ -4,8 +4,10 @@ import Button from "react-bootstrap/esm/Button";
 import { Helmet } from "react-helmet-async";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../Store";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const { state, dispatch: contextDispatch } = useContext(Store);
+  const { userInfo } = state;
 
 
   const submitHandler = async (e) => {
@@ -30,9 +33,16 @@ const SignIn = () => {
         localStorage.setItem('userInfo', JSON.stringify(data));
         navigate(redirect || '/')
     }catch (err) {
-      alert('Invalid email or password');
+      toast.error(getError(err));
     }
   }
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo])
+
   return (
     <Container className='small-container'>
       <Helmet>
