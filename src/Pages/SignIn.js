@@ -2,12 +2,13 @@ import Container from "react-bootstrap/esm/Container";
 import Form from "react-bootstrap/esm/Form";
 import Button from "react-bootstrap/esm/Button";
 import { Helmet } from "react-helmet-async";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useContext, useState } from "react";
 import { Store } from "../Store";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const {search} = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
@@ -26,8 +27,10 @@ const SignIn = () => {
           password,
         });
         contextDispatch({ type: 'USER_SIGNIN', payload: data })
-        console.log(data)
+        localStorage.setItem('userInfo', JSON.stringify(data));
+        navigate(redirect || '/')
     }catch (err) {
+      alert('Invalid email or password');
     }
   }
   return (
