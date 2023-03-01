@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { useContext } from "react";
 import { Store } from "../Store";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Payment = () => {
 
@@ -43,7 +44,7 @@ const Payment = () => {
               label="PayPal"
               value="PayPal"
               checked={paymentMethodName === "PayPal"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              onChange={(e) => setPaymentMethodName(e.target.value)}
             />
           </div>
           <div>
@@ -53,7 +54,7 @@ const Payment = () => {
               label="Stripe"
               value="Stripe"
               checked={paymentMethodName === "Stripe"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              onChange={(e) => setPaymentMethodName(e.target.value)}
             />
           </div>
           <div className='mb-3'>

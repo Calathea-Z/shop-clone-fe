@@ -15,6 +15,7 @@ import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import ShippingAddress from "./pages/ShippingAddress";
 import SignUp from "./pages/SignUp";
+import Payment from "./pages/Payment";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -24,6 +25,7 @@ function App() {
     contextDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress')
+    localStorage.removeItem('paymentMethod')
   }
 
   return (
@@ -81,6 +83,7 @@ function App() {
               <Route path='/signin' element={<SignIn /> } />
               <Route path='/shipping' element={<ShippingAddress /> } />
               <Route path='/signup' element={<SignUp /> } />
+              <Route path='/payment' element={<Payment /> } />
             </Routes>
           </Container>
         </main>
