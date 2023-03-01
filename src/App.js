@@ -14,6 +14,7 @@ import { Store } from "./Store";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import ShippingAddress from "./pages/ShippingAddress";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -79,6 +80,7 @@ function App() {
               <Route path='/cart' element={<Cart /> } />
               <Route path='/signin' element={<SignIn /> } />
               <Route path='/shipping' element={<ShippingAddress /> } />
+              <Route path='/signup' element={<SignUp /> } />
             </Routes>
           </Container>
         </main>
