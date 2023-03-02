@@ -10,6 +10,8 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { toast } from "react-toastify";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -36,6 +38,46 @@ function OrderFinal() {
   const { id: orderId } = params;
   const navigate = useNavigate();
 
+  const [{ isPending }, payPalDispatch] = usePayPalScriptReducer();
+
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
+      })
+      .then((orderId) => {
+        return orderId;
+      });
+  }
+
+  function onApprove(data, actions) {
+    return actions.order.capture().then(async function (details) {
+      try {
+        dispatch({ type: "PAY_REQUEST" });
+        const { data } = await axios.put(
+          `/api/orders/${order._id}/pay`,
+          details,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        dispatch({ type: 'PAY_SUCCESS', payload: data })
+        toast.success('Order is Paid!');
+      } catch (err) {
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
+        toast.error(getError(err));
+      }
+    });
+  }
+
+  function onError(err){
+    toast.error(getError(err));
+  }
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -53,8 +95,23 @@ function OrderFinal() {
     }
     if (!order._id || (order._id && order._id !== orderId)) {
       fetchOrder();
+    } else {
+      const loadPayPalScript = async () => {
+        const { data: clientId } = await axios.get("/api/keys/paypal", {
+          headers: { authorization: `Bearer: ${userInfo.token}` },
+        });
+        payPalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": clientId,
+            currency: "USD",
+          },
+        });
+        payPalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+      loadPayPalScript();
     }
-  }, [order, userInfo, orderId, navigate]);
+  }, [order, userInfo, orderId, navigate, payPalDispatch]);
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -120,8 +177,7 @@ function OrderFinal() {
                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                       </Col>
                       <Col md={3}>
-                        Quantity:{' '}
-                        <span>{item.quantity}</span>
+                        Quantity: <span>{item.quantity}</span>
                       </Col>
                       <Col md={3}>Price Per Item: ${item.price}</Col>
                     </Row>
@@ -156,10 +212,28 @@ function OrderFinal() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Order Total</Col>
-                    <Col>$ {order.totalPrice.toFixed(2)}</Col>
+                    <Col>
+                      <strong>Order Total</strong>
+                    </Col>
+                    <Col>
+                      <strong>$ {order.totalPrice.toFixed(2)}</strong>
+                    </Col>
                   </Row>
                 </ListGroup.Item>
+                {!order.isPaid && (
+                  <ListGroup.Item>
+                    (isPending ? (
+                    <LoadingBox />) : (
+                    <div>
+                      <PayPalButtons
+                        createOrder={createOrder}
+                        onApprove={onApprove}
+                        onError={onError}
+                      ></PayPalButtons>
+                    </div>
+                    ) )
+                  </ListGroup.Item>
+                )}
               </ListGroup>
             </Card.Body>
           </Card>
