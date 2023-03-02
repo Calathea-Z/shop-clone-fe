@@ -16,6 +16,7 @@ import SignIn from "./pages/SignIn";
 import ShippingAddress from "./pages/ShippingAddress";
 import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
+import PreviewOrder from "./pages/PreviewOrder";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -84,6 +85,7 @@ function App() {
               <Route path='/shipping' element={<ShippingAddress /> } />
               <Route path='/signup' element={<SignUp /> } />
               <Route path='/payment' element={<Payment /> } />
+              <Route path='/previeworder' element={<PreviewOrder /> } />
             </Routes>
           </Container>
         </main>
