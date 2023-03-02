@@ -96,7 +96,7 @@ function App() {
         <footer>
           <div className='text-center'>
             <h6>
-              All Rights Reserved
+              Check out my <a href='https:/zach-sykes.com'>Portfolio</a>
             </h6>
           </div>
         </footer>

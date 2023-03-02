@@ -1,19 +1,20 @@
 import axios from "axios";
-import { Button } from "bootstrap";
-import { useContext, useEffect } from "react";
+import Button  from "react-bootstrap/Button"
+import { useContext, useEffect, useReducer } from "react";
 import { Helmet} from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { Store } from "../Store";
 import { getError } from "../utils";
+import table from 'react-bootstrap/Table'
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, orders: action.payload, loading: false};
+      return { ...state, orders: action.payload, loading: false };
     case 'FETCH_FAIL':
       return { ...state, loading:false, error: action.payload };
     default:
@@ -24,10 +25,10 @@ const reducer = (state, action) => {
 
 function OrderHistory() {
   const { state } = useContext(Store);
-  const { useInfo } = state;
+  const { userInfo } = state;
   const navigate = useNavigate();
 
-  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true, 
     error: ''
   });
@@ -36,9 +37,8 @@ function OrderHistory() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST'});
       try {
-        const { data } = await axios.get(
-          `/api/orders/mine`,
-          { headers: { authorization: `Bearer: ${userInfo.token}` } }
+        const { data } = await axios.get(`/api/orders/mine`,
+          { headers: { authorization: `Bearer ${userInfo.token}` } }
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       }catch (err) {
@@ -47,20 +47,20 @@ function OrderHistory() {
       }
     }
     fetchData();
-  }, [userInfo, ])
+  }, [userInfo ])
 
   return (
     <div>
       <Helmet>
         <title>Order History</title>
       </Helmet>
-      <h1>Order History</h1>
-      {loading ? (
+       <h1>Order History</h1>
+       {loading ? (
         <LoadingBox /> 
-      ) : error ? (
+       ) : error ? (
         <MessageBox variant='danger'>{error}</MessageBox>
-      ) : (
-        <table>
+       ) : (
+        <table className='table'>
           <thead>
           <tr>
             <th>ID</th>
@@ -72,7 +72,7 @@ function OrderHistory() {
           </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
@@ -92,11 +92,11 @@ function OrderHistory() {
                   }}>Details</Button>
                 </td>
               </tr>
-            ))}
+             ))}
           </tbody>
         </table>
-      )}
-    </div>>
+       )}
+    </div>
   )
 }
 
