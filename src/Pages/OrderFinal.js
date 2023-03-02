@@ -103,14 +103,17 @@ function OrderFinal() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
+
     if (!userInfo) {
       return navigate("/login");
     }
+
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
       if (successPay) {
         dispatch({ type: 'PAY_RESET' })
       }
+
     } else {
       const loadPayPalScript = async () => {
         const { data: clientId } = await axios.get("/api/keys/paypal", {
@@ -125,6 +128,7 @@ function OrderFinal() {
         });
         payPalDispatch({ type: "setLoadingStatus", value: "pending" });
       };
+      
       loadPayPalScript();
     }
   }, [order, userInfo, orderId, navigate, payPalDispatch, successPay]);
@@ -248,7 +252,7 @@ function OrderFinal() {
                       ></PayPalButtons>
                     </div>
                     )}
-                    {loadingPay && <LoadingBox /> }
+                    {loadingPay && <LoadingBox></LoadingBox> }
                   </ListGroup.Item>
                 )}
               </ListGroup>
