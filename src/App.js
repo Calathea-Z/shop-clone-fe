@@ -18,6 +18,7 @@ import SignUp from "./pages/SignUp";
 import Payment from "./pages/Payment";
 import PreviewOrder from "./pages/PreviewOrder";
 import OrderFinal from "./pages/OrderFinal";
+import OrderHistory from "./pages/OrderHistory";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -88,6 +89,7 @@ function App() {
               <Route path='/payment' element={<Payment /> } />
               <Route path='/previeworder' element={<PreviewOrder /> } />
               <Route path='/order/:id' element={<OrderFinal /> } />
+              <Route path='/orderhistory' element={<OrderHistory /> } />
             </Routes>
           </Container>
         </main>
