@@ -8,8 +8,8 @@ import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -89,15 +89,19 @@ function OrderFinal() {
               )}
             </Card.Body>
           </Card>
-          <Card classname="mb-3">
+          <Card className="mb-3">
             <Card.Body>
               <Card.Title>Payment</Card.Title>
               <Card.Text>
                 <strong>Method: </strong> {order.paymentMethod}
               </Card.Text>
-              {order.isPaid} ? (
-              <MessageBox variant="success">Paid at {order.paidAt}</MessageBox>)
-              : (<MessageBox variant="danger">Not Paid</MessageBox>)
+              {order.isPaid ? (
+                <MessageBox variant="success">
+                  Paid at {order.paidAt}
+                </MessageBox>
+              ) : (
+                <MessageBox variant="danger">Not Paid</MessageBox>
+              )}
             </Card.Body>
           </Card>
           <Card className="mb-3">
@@ -116,9 +120,10 @@ function OrderFinal() {
                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                       </Col>
                       <Col md={3}>
+                        Quantity:{' '}
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>{item.price}</Col>
+                      <Col md={3}>Price Per Item: ${item.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
