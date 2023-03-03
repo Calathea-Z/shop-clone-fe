@@ -19,6 +19,7 @@ import Payment from "./pages/Payment";
 import PreviewOrder from "./pages/PreviewOrder";
 import OrderFinal from "./pages/OrderFinal";
 import OrderHistory from "./pages/OrderHistory";
+import Profile from "./pages/Profile";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -86,6 +87,7 @@ function App() {
               <Route path="/product/:slug" element={<Product />} />
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path='/profile' element={<Profile /> } />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/shipping" element={<ShippingAddress />} />
               <Route path="/signup" element={<SignUp />} />
